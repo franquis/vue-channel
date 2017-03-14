@@ -1,0 +1,57 @@
+<html>
+<head>
+	<title>Vue-Channel test</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.2/css/bulma.min.css">
+</head>
+<body>
+	<div id="app">
+		<div class="hero is-danger is-fullheight is-bolt">
+			<div class="hero-head">
+
+			</div>
+			<div class="hero-body">
+				<div class="container">
+					<h1 class="is-1 title">{{title}}</h1>
+					<h2 class="is-2 subtitle">{{subtitle}}</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.2.1/vuex.js"></script>
+	<script type="text/javascript" src="../dist/build.js"></script>
+	<script type="text/javascript">
+		// const store = new Vuex({});
+		// import VueChannel from 'VueChannel';
+
+		const store = {};
+
+		Vue.use(VueChannel.default, 'ws://localhost:4000/socket', {}, store);
+
+		var app = new Vue({
+			el : "#app",
+			channels : {
+				'admin' : {
+					onJoin() {
+						console.log("Joined Admin channel");
+					},
+					onError(err) {
+						console.log("Error", err);
+					},
+					onMessage(event, payload) {
+						console.log("MSG", event, payload);	
+					}
+				}
+			},
+			data : {
+				title: "Vue-Channel",
+				subtitle : "Use Phoenix channels with VueJS"
+			},
+			mounted() {
+				console.log("Hello Vue", this.$socket);
+			}
+		});
+
+	</script>
+</body>
+</html>
